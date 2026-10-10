@@ -1,6 +1,6 @@
 {
   "project": "T05 / AURORA MAX HISTORY",
-  "stage": "PRESTART_NOT_A_STARTED",
+  "stage": "AI_A_FINISHED_AND_HANDED_OFF_WAITING_FOR_B",
   "tests_frozen_at_utc": "2026-10-10T14:17:19Z",
   "tests_frozen_at_kst": "2026-10-10T23:17:19+09:00",
   "frozen_test_ids": [
@@ -21,17 +21,56 @@
   "baseline_commit_sha": "b23ff0796fd1dc39e57e4d31ca851791c91d44e4",
   "baseline_source_url": "https://github.com/jennajiminkim/aurora-observation/tree/b23ff0796fd1dc39e57e4d31ca851791c91d44e4",
   "A": {
-    "model_service": "[공개 보고서에는 익명 A로만 표시]",
-    "actual_started_at_utc": null,
-    "actual_ended_at_utc": null,
-    "starting_commit_sha": null,
-    "ending_commit_sha": null,
-    "user_messages": null,
+    "model_service": "AI A (masked in public report)",
+    "actual_started_at_utc": "2026-10-10T14:41:00Z",
+    "actual_ended_at_utc": "2026-10-10T14:53:44Z",
+    "starting_commit_sha": "bec15b6033e8cb031257ff69f756787bf41aed10",
+    "ending_commit_sha": "e13b7d3d87f0d9d7b57a056143e161a83a3b8883",
+    "user_messages": 1,
     "tool_calls": null,
-    "test_runs": [],
-    "passing_tests": null,
-    "error_rounds": null,
-    "handoff_commit_sha": null
+    "test_runs": [
+      {
+        "sequence": 1,
+        "passed": 7,
+        "failed": [
+          "T05-H02",
+          "T05-H05",
+          "T05-H06"
+        ]
+      },
+      {
+        "sequence": 2,
+        "passed": 7,
+        "failed": [
+          "T05-H02",
+          "T05-H05",
+          "T05-H06"
+        ]
+      },
+      {
+        "sequence": 3,
+        "passed": 7,
+        "failed": [
+          "T05-H02",
+          "T05-H05",
+          "T05-H06"
+        ]
+      },
+      {
+        "sequence": 4,
+        "passed": 7,
+        "failed": [
+          "T05-H02",
+          "T05-H05",
+          "T05-H06"
+        ]
+      }
+    ],
+    "passing_tests": 7,
+    "error_rounds": 4,
+    "duration_minutes": 12.73,
+    "handoff_commit_sha": null,
+    "code_version_note": "Ending source SHA denotes the GitHub commit containing the A code. Handoff/test evidence commits follow without changes to application source."
   },
   "B": {
     "model_service": "[A와 다른 모델/서비스, 공개 보고서에서는 익명 B]",
@@ -52,10 +91,14 @@
     "B_STARTED",
     "B_FINISHED"
   ],
-  "sequence_current_status": "NONE_STARTED",
+  "sequence_current_status": "A_FINISHED_AND_HANDED_OFF",
   "notes": [
     "A 시작 시각은 구현 요청을 실제 처음 전달하는 순간 채운다. 사전 준비를 A 시작으로 허위 기록하지 않는다.",
     "B는 서로 다른 서비스/모델의 새 대화에서 저장소와 HANDOFF.md만 받는다.",
     "A/B 측정 수치는 실측값만 입력한다. 오류 회차는 고정 10검사의 FAIL 포함 회차 수다."
+  ],
+  "sequence_actual": [
+    "A_STARTED",
+    "A_FINISHED_AND_HANDED_OFF"
   ]
 }
