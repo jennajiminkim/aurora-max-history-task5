@@ -1,0 +1,61 @@
+{
+  "project": "T05 / AURORA MAX HISTORY",
+  "stage": "PRESTART_NOT_A_STARTED",
+  "tests_frozen_at_utc": "2026-10-10T14:17:19Z",
+  "tests_frozen_at_kst": "2026-10-10T23:17:19+09:00",
+  "frozen_test_ids": [
+    "T05-H01",
+    "T05-H02",
+    "T05-H03",
+    "T05-H04",
+    "T05-H05",
+    "T05-H06",
+    "T05-H07",
+    "T05-H08",
+    "T05-H09",
+    "T05-H10"
+  ],
+  "frozen_test_count": 10,
+  "common_time_cap_minutes": 45,
+  "common_user_message_cap": 8,
+  "baseline_commit_sha": "b23ff0796fd1dc39e57e4d31ca851791c91d44e4",
+  "baseline_source_url": "https://github.com/jennajiminkim/aurora-observation/tree/b23ff0796fd1dc39e57e4d31ca851791c91d44e4",
+  "A": {
+    "model_service": "[공개 보고서에는 익명 A로만 표시]",
+    "actual_started_at_utc": null,
+    "actual_ended_at_utc": null,
+    "starting_commit_sha": null,
+    "ending_commit_sha": null,
+    "user_messages": null,
+    "tool_calls": null,
+    "test_runs": [],
+    "passing_tests": null,
+    "error_rounds": null,
+    "handoff_commit_sha": null
+  },
+  "B": {
+    "model_service": "[A와 다른 모델/서비스, 공개 보고서에서는 익명 B]",
+    "actual_started_at_utc": null,
+    "actual_ended_at_utc": null,
+    "starting_commit_sha": null,
+    "ending_commit_sha": null,
+    "user_messages": null,
+    "tool_calls": null,
+    "test_runs": [],
+    "passing_tests": null,
+    "error_rounds": null,
+    "handoff_sha256_verified": null
+  },
+  "sequence": [
+    "A_STARTED",
+    "A_FINISHED_AND_HANDED_OFF",
+    "B_STARTED",
+    "B_FINISHED"
+  ],
+  "sequence_current_status": "NONE_STARTED",
+  "notes": [
+    "A 시작 시각은 구현 요청을 실제 처음 전달하는 순간 채운다. 사전 준비를 A 시작으로 허위 기록하지 않는다.",
+    "B는 서로 다른 서비스/모델의 새 대화에서 저장소와 HANDOFF.md만 받는다.",
+    "A/B 측정 수치는 실측값만 입력한다. 오류 회차는 고정 10검사의 FAIL 포함 회차 수다."
+  ]
+}

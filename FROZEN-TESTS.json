@@ -1,0 +1,108 @@
+{
+  "assignment": "T05 / 대화가 끊겨도 이어지는 프로젝트",
+  "feature": "AURORA MAX HISTORY",
+  "test_contract_revision": "1.0-FROZEN",
+  "locked_at_utc": "2026-10-10T14:17:19Z",
+  "locked_at_kst": "2026-10-10T23:17:19+09:00",
+  "user_approved": "2026-10-10 — T05-H01~H10, both limits approved explicitly before A implementation",
+  "source": {
+    "repository": "https://github.com/jennajiminkim/aurora-observation",
+    "branch_at_freeze": "main",
+    "base_commit_sha": "b23ff0796fd1dc39e57e4d31ca851791c91d44e4",
+    "permalink": "https://github.com/jennajiminkim/aurora-observation/tree/b23ff0796fd1dc39e57e4d31ca851791c91d44e4",
+    "deployment_at_freeze": "https://aurora-observation.vercel.app/"
+  },
+  "equal_limits": {
+    "wall_clock_minutes_per_ai": 45,
+    "user_requests_per_ai": 8,
+    "request_definition": "한 AI 세션에 사용자가 전송하는 메시지 1건을 요청 1건으로 계산. 도구/API 호출은 별도로 계수·보고하되 이번 고정 상한에 포함하지 않음. 최초 구현 요청도 1회로 계산.",
+    "clock_definition": "각 AI가 처음 구현 요청을 실제로 받은 시각부터 종료·인수인계(A)/완료(B)까지 실제 경과시간; 작업 전 준비 단계는 제외."
+  },
+  "invariants": [
+    "NOAA 실측값 비조작 및 합성/실측 저장소 분리",
+    "DAILY RECORDS 하루 한 건; LATEST/MAX/MAX TIME 유지",
+    "65pt 이벤트 자동 저장 유지",
+    "PREVIEW 및 T04 fixture의 실측 저장 오염 0건",
+    "ASCII 애니메이션·중앙 정렬·NOAA 15분 브라우저 조회·기존 검증 도구 유지",
+    "기준 검사 10건 삭제/완화/기대값 변경 불가",
+    "기존 공개 Vercel 배포와 main 소스는 AI B 완료 전 수정하지 않음",
+    "개인정보·비밀키·대화 전문을 보고서에 포함하지 않음"
+  ],
+  "tests": [
+    {
+      "id": "T05-H01",
+      "title": "VIEW HISTORY 열기 및 레이아웃",
+      "setup": "합성 일별 기록 2건(2026-10-09 MAX=9pt, 2026-10-10 MAX=16pt)을 테스트 전용 격리 저장소에 주입하고 OBSERVATION 페이지를 연다. 화면 너비 1440px과 390px에서 확인한다.",
+      "input": "DAILY RECORDS 내 VIEW HISTORY 버튼 클릭",
+      "expected": "사이트 내부에 폴더/탭 헤더가 있는 AURORA MAX HISTORY 모달이 열린다. 원래 관측 화면은 뒤에 유지된다. 두 화면 너비 모두 모달 내용이 화면에서 잘리거나 가로로 튀어나가지 않는다."
+    },
+    {
+      "id": "T05-H02",
+      "title": "닫기 및 기존 기록 보존",
+      "setup": "H01의 합성 기록으로 HISTORY 모달을 연 뒤 저장 데이터 스냅샷을 채취한다.",
+      "input": "닫기 × 클릭 후 다시 열어서 Esc 입력",
+      "expected": "각 입력 직후 모달이 닫히고 메인 관측 화면으로 복귀한다. 원본 일별 레코드, 이벤트 아카이브 내용은 닫기 전후 완전히 동일하다."
+    },
+    {
+      "id": "T05-H03",
+      "title": "KST 날짜 내림차순",
+      "setup": "테스트 전용 저장소를 비운다. 세 일별 레코드의 record_date를 각각 2026-10-08, 2026-10-10, 2026-10-09로 주입한다. 각 MAX는 순서대로 8pt, 10pt, 9pt다.",
+      "input": "VIEW HISTORY 열기",
+      "expected": "2026-10-10 (10pt) → 2026-10-09 (9pt) → 2026-10-08 (8pt) 순으로 정확히 3건이 표시된다."
+    },
+    {
+      "id": "T05-H04",
+      "title": "LATEST 대신 MAX 사용",
+      "setup": "record_date=2026-10-09, normalized_value(LATEST)=12pt, max_value=65pt, max_source_time=2026-10-09T11:20:00Z인 일별 레코드 1건 주입",
+      "input": "VIEW HISTORY를 열고 2026-10-09 MAX 막대·레이블 조회",
+      "expected": "그래프 값과 표시 텍스트가 65pt를 사용한다. 12pt를 최고값으로 오인하여 그리지 않는다."
+    },
+    {
+      "id": "T05-H05",
+      "title": "NOAA UTC 원천 시각 표시",
+      "setup": "record_date=2026-08-25, max_value=65, max_source_time=2026-08-25T11:20:00Z인 1건 주입",
+      "input": "VIEW HISTORY에서 해당 날짜를 선택해 MAX TIME 확인",
+      "expected": "MAX TIME에 2026-08-25 11:20 UTC가 표시된다. KST로 조용히 바꾸거나 조회 시각을 원천 시각처럼 표시하지 않는다."
+    },
+    {
+      "id": "T05-H06",
+      "title": "선택 날짜 상세 조회",
+      "setup": "서로 다른 KST 날짜 2건 주입: 2026-10-09(LATEST=5pt,MAX=9pt,MAX TIME=2026-10-09T12:04:00Z), 2026-10-10(LATEST=13pt,MAX=16pt,MAX TIME=2026-10-10T02:24:00Z).",
+      "input": "VIEW HISTORY에서 2026-10-09 날짜·막대 선택",
+      "expected": "선택된 날짜 2026-10-09의 MAX=9pt, LATEST=5pt, MAX TIME=2026-10-09 12:04 UTC를 상세 영역에 보여준다. 다른 날짜 데이터와 혼동하지 않는다."
+    },
+    {
+      "id": "T05-H07",
+      "title": "동점 최고값 최신일 우선",
+      "setup": "2026-08-24 MAX=29pt, 2026-08-25 MAX=65pt, 2026-08-26 MAX=65pt(3건) 주입",
+      "input": "VIEW HISTORY를 열어 HIGHEST RECORDED/PEAK DATE 확인",
+      "expected": "전체 최고값은 65pt이고, 같은 최고값 두 날짜 중 더 최근 KST 날짜인 2026-08-26이 대표 PEAK DATE로 표시된다."
+    },
+    {
+      "id": "T05-H08",
+      "title": "하루 한 건과 날짜 경계",
+      "setup": "비어 있는 합성 실측 저장소와 제어 가능한 시계를 사용한다. 실제 NOAA API/기존 일별 저장소에는 기록하지 않는다.",
+      "input": "KST 2026-10-09 09:00에 12pt 성공 → 같은 날 12:00에 30pt 성공 → KST 2026-10-10 00:15에 18pt 성공 순서로 재생",
+      "expected": "일별 레코드 수는 정확히 2건. 2026-10-09의 LATEST/MAX=30pt, 2026-10-10의 LATEST/MAX=18pt다. HISTORY 날짜도 2개로 표시한다."
+    },
+    {
+      "id": "T05-H09",
+      "title": "빈 데이터·구형 기록 안전 처리",
+      "setup": "(A) 합성 기록 0건. (B) normalized_value=12pt, source_time=2026-10-09T03:00:00Z인 2026-10-09 레코드 한 건을 max_value와 max_source_time 필드 없이 주입한다.",
+      "input": "각 상태에서 VIEW HISTORY 열기",
+      "expected": "(A) No records yet 등 빈 상태 안내 표시. (B) 저장된 LATEST=12pt를 MAX의 초기 기준으로만 표시하고 MAX TIME은 저장된 source_time을 사용한다. 존재하지 않는 더 높은 과거 MAX를 만들어내지 않는다."
+    },
+    {
+      "id": "T05-H10",
+      "title": "미리보기·합성 실패 데이터 격리",
+      "setup": "LIVE 일별 상태, HISTORY, 65pt 이벤트 아카이브의 스냅샷을 채취한다. 합성 환경은 실제 브라우저 실측 키와 분리한다.",
+      "input": "PREVIEW MODE에서 85pt 선택 → 닫기 → VERIFICATION 카드 3 합성 120pt fixture 재생 → VIEW HISTORY 확인",
+      "expected": "실제 DAILY RECORDS, MAX HISTORY, EVENT ARCHIVE에 85pt나 합성 120pt가 새로 저장되지 않는다. 시작 시점 LIVE/이벤트 기록 스냅샷과 같다."
+    }
+  ],
+  "measurement": {
+    "error_run_definition": "10개 고정 검사를 한 번 수행한 실행 회차에서 FAIL이 하나라도 발생하면 오류 회차 1로 집계. FAIL 검사 개수나 코드 오류 개수와 구별.",
+    "redo_work": "제출 후 채점기가 고정된 소스 버전 쌍으로 계산; 수기로 기록하지 않음"
+  },
+  "workflow_status": "FROZEN_BUT_A_NOT_STARTED"
+}
