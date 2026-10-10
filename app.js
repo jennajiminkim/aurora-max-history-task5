@@ -16,6 +16,8 @@
   const EVENT_THRESHOLD = 65;
   const REARM_THRESHOLD = 60;
   const POLL_INTERVAL_MS = 15 * 60 * 1000;
+  const T05_TEST_MODE = new URLSearchParams(location.search).get('t05test') === '1' || window.__T05_FORCE_TEST_MODE__ === true;
+  const T05_TEST_KEY = 'aot_t05_history_fixtures_only';
   const EVENT_LIMIT = 40;
   const ASSET_ROOT = './assets/studio-task-assets/t04-real-information-board';
   const EXPECTED_HASHES = {
@@ -575,6 +577,51 @@
     setTimeout(() => URL.revokeObjectURL(url), 2000);
   }
 
+  // Task 5: read-only view of daily peak data; synthetic fixtures stay in
+  // sessionStorage and never touch LIVE_KEY / EVENT_KEY / REPLAY_KEY.
+  function historyRecordsForView() {
+    if (T05_TEST_MODE) {
+      try { return JSON.parse(sessionStorage.getItem(T05_TEST_KEY) || '[]'); }
+      catch (_) { return []; }
+    }
+    return sortedRecords(loadState(LIVE_KEY), STATION.signalId);
+  }
+
+  function renderMaxHistory() {
+    const api = window.MaxHistoryData;
+    const model = api.model(historyRecordsForView());
+    const target = $('maxHistoryRows');
+    if (!model.rows.length) {
+      target.innerHTML = '<div class="max-history-empty">No records yet — fetch genuine NOAA data to begin your history.</div>';
+    } else {
+      target.innerHTML = model.rows.map(r => {
+        const pct = Math.max(0, Math.min(100, r.max));
+        return `<div class="max-history-row ${r.max >= 65 ? 'high-activity' : ''}" data-date="${escapeHtml(r.date)}"><time>${escapeHtml(r.date)}</time><div class="max-history-meter"><div class="max-history-fill" style="width:${pct}%"></div></div><b class="max-history-pt">${escapeHtml(r.max)} pt</b><small class="max-history-source">MAX TIME (NOAA UTC) · ${escapeHtml(r.maxTimeLabel)}</small></div>`;
+      }).join('');
+    }
+    $('maxHistoryHighest').textContent = model.highest ? `${model.highest.max} pt` : '--';
+    $('maxHistoryPeakDate').textContent = model.highest ? model.highest.date : '--';
+  }
+
+  function openMaxHistory() {
+    renderMaxHistory();
+    const dialog = $('maxHistoryDialog');
+    if (!dialog.open) dialog.showModal();
+  }
+
+  if (T05_TEST_MODE) {
+    // Test-only controls, scoped to a URL flag and isolated in sessionStorage.
+    window.__T05_TEST = Object.freeze({
+      setRecords(rows) { sessionStorage.setItem(T05_TEST_KEY, JSON.stringify(rows)); renderMaxHistory(); },
+      getRecords() { return historyRecordsForView(); },
+      stepReading(reading) {
+        const next = window.MaxHistoryData.addTestReading(historyRecordsForView(), reading);
+        sessionStorage.setItem(T05_TEST_KEY, JSON.stringify(next));
+        renderMaxHistory();
+      }
+    });
+  }
+
   async function fetchLive() {
     if (fetchingLive) return;
     fetchingLive = true;
@@ -1104,6 +1151,7 @@
       tab.addEventListener('click', () => setSiteView(tab.dataset.viewTarget, true));
     });
     window.addEventListener('hashchange', () => setSiteView(location.hash === '#verification' ? 'verification' : 'observation'));
+    $('viewMaxHistory').addEventListener('click', openMaxHistory);
     $('liveButton').addEventListener('click', fetchLive);
     $('previewButton').addEventListener('click', openPreview);
     $('previewClose').addEventListener('click', closePreview);
@@ -1147,10 +1195,10 @@
   setPreviewScore(65);
   measureStageColumns();
   renderAuroraFrame();
-  fetchLive();
+  if (!T05_TEST_MODE) fetchLive();
   // Timers run only while the browser remains open, not as a 24/7 server.
-  setInterval(fetchLive, POLL_INTERVAL_MS);
+  if (!T05_TEST_MODE) setInterval(fetchLive, POLL_INTERVAL_MS);
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && Date.now() - lastFetchAttempt >= POLL_INTERVAL_MS) fetchLive();
+    if (!T05_TEST_MODE && !document.hidden && Date.now() - lastFetchAttempt >= POLL_INTERVAL_MS) fetchLive();
   });
 })();
