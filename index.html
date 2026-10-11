@@ -169,7 +169,7 @@
     </footer>
   </main>
 
-  <!-- T05 AI A handoff: read-only MAX list. AI B completes close / detail selection. -->
+  <!-- T05: read-only MAX history (A) + close / selected-day detail (B). -->
   <dialog id="maxHistoryDialog" class="max-history-dialog" aria-label="AURORA MAX HISTORY">
     <div class="max-history-folder">
       <header class="max-folder-tab"><span>▣ &nbsp; aurora-max-history</span><button type="button" id="maxHistoryClose" aria-label="Close history">×</button></header>
@@ -179,7 +179,7 @@
         <p class="quiet">The highest activity successfully fetched in this browser for each KST date. Not a complete-day NOAA maximum.</p>
         <div id="maxHistoryRows" class="max-history-rows" aria-label="Daily maximum history"></div>
         <div class="max-folder-peak"><span>HIGHEST RECORDED</span><strong id="maxHistoryHighest">--</strong><span>PEAK DATE</span><strong id="maxHistoryPeakDate">--</strong></div>
-        <section id="maxHistoryDetail" class="max-history-detail" aria-label="Selected peak day details">Select a day to inspect MAX / LATEST / MAX TIME. AI B will complete this panel.</section>
+        <section id="maxHistoryDetail" class="max-history-detail" aria-label="Selected peak day details" aria-live="polite"><p class="max-detail-hint">Select a day to inspect MAX / LATEST / MAX TIME.</p></section>
       </div>
     </div>
   </dialog>

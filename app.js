@@ -587,6 +587,8 @@
     return sortedRecords(loadState(LIVE_KEY), STATION.signalId);
   }
 
+  let selectedMaxDate = null;
+
   function renderMaxHistory() {
     const api = window.MaxHistoryData;
     const model = api.model(historyRecordsForView());
@@ -596,17 +598,77 @@
     } else {
       target.innerHTML = model.rows.map(r => {
         const pct = Math.max(0, Math.min(100, r.max));
-        return `<div class="max-history-row ${r.max >= 65 ? 'high-activity' : ''}" data-date="${escapeHtml(r.date)}"><time>${escapeHtml(r.date)}</time><div class="max-history-meter"><div class="max-history-fill" style="width:${pct}%"></div></div><b class="max-history-pt">${escapeHtml(r.max)} pt</b><small class="max-history-source">MAX TIME (NOAA UTC) · ${escapeHtml(r.maxTimeLabel)}</small></div>`;
+        const selected = r.date === selectedMaxDate;
+        return `<div class="max-history-row ${r.max >= 65 ? 'high-activity' : ''}${selected ? ' is-selected' : ''}" data-date="${escapeHtml(r.date)}" role="button" tabindex="0" aria-pressed="${selected}" aria-label="${escapeHtml(r.date)} MAX ${escapeHtml(r.max)} pt, select for details"><time>${escapeHtml(r.date)}</time><div class="max-history-meter"><div class="max-history-fill" style="width:${pct}%"></div></div><b class="max-history-pt">${escapeHtml(r.max)} pt</b><small class="max-history-source">MAX TIME (NOAA UTC) · ${escapeHtml(r.maxTimeLabel)}</small></div>`;
       }).join('');
     }
     $('maxHistoryHighest').textContent = model.highest ? `${model.highest.max} pt` : '--';
     $('maxHistoryPeakDate').textContent = model.highest ? model.highest.date : '--';
+    renderMaxHistoryDetail(model);
+  }
+
+  // Selected-day detail panel. Read-only: derives everything from the same model rows.
+  function renderMaxHistoryDetail(model) {
+    const detail = $('maxHistoryDetail');
+    const row = selectedMaxDate ? model.rows.find(r => r.date === selectedMaxDate) : null;
+    if (!row) {
+      selectedMaxDate = null;
+      detail.innerHTML = '<p class="max-detail-hint">Select a day to inspect MAX / LATEST / MAX TIME.</p>';
+      return;
+    }
+    const unit = escapeHtml(row.unit || 'pt');
+    detail.innerHTML = `<div class="max-detail-head"><span>SELECTED DAY</span><strong>${escapeHtml(row.date)}</strong></div>`
+      + `<dl class="max-detail-grid">`
+      + `<div><dt>MAX (OBSERVED)</dt><dd>${escapeHtml(row.max)} ${unit}</dd></div>`
+      + `<div><dt>LATEST</dt><dd>${escapeHtml(row.latest)} ${unit}</dd></div>`
+      + `<div><dt>MAX TIME (NOAA UTC)</dt><dd>${escapeHtml(row.maxTimeLabel)}</dd></div>`
+      + `</dl>`
+      + (row.legacyFallback ? '<p class="max-detail-note">No separate MAX was saved for this date; the last saved value is used as its baseline.</p>' : '');
+  }
+
+  function selectMaxDate(date) {
+    selectedMaxDate = date || null;
+    renderMaxHistory();
   }
 
   function openMaxHistory() {
     renderMaxHistory();
     const dialog = $('maxHistoryDialog');
     if (!dialog.open) dialog.showModal();
+  }
+
+  // Closing only hides the dialog: no storage writes, no state changes to LIVE/EVENT data.
+  function closeMaxHistory() {
+    const dialog = $('maxHistoryDialog');
+    if (dialog.open) dialog.close();
+  }
+
+  function bindMaxHistoryEvents() {
+    const dialog = $('maxHistoryDialog');
+    $('maxHistoryClose').addEventListener('click', closeMaxHistory);
+    // Escape is handled natively by <dialog>; both paths end in 'close', so restore focus there.
+    dialog.addEventListener('close', () => { $('viewMaxHistory').focus(); });
+    // Clicking the dimmed backdrop (the dialog element itself) also closes it.
+    dialog.addEventListener('click', event => {
+      if (event.target !== dialog) return;
+      const box = dialog.getBoundingClientRect();
+      const outside = event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom;
+      if (outside) closeMaxHistory();
+    });
+    const rows = $('maxHistoryRows');
+    rows.addEventListener('click', event => {
+      const row = event.target.closest('.max-history-row[data-date]');
+      if (row) selectMaxDate(row.dataset.date);
+    });
+    rows.addEventListener('keydown', event => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      const row = event.target.closest('.max-history-row[data-date]');
+      if (!row) return;
+      event.preventDefault();
+      selectMaxDate(row.dataset.date);
+      const again = rows.querySelector(`.max-history-row[data-date="${row.dataset.date}"]`);
+      if (again) again.focus();
+    });
   }
 
   if (T05_TEST_MODE) {
@@ -1152,6 +1214,7 @@
     });
     window.addEventListener('hashchange', () => setSiteView(location.hash === '#verification' ? 'verification' : 'observation'));
     $('viewMaxHistory').addEventListener('click', openMaxHistory);
+    bindMaxHistoryEvents();
     $('liveButton').addEventListener('click', fetchLive);
     $('previewButton').addEventListener('click', openPreview);
     $('previewClose').addEventListener('click', closePreview);
