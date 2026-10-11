@@ -1,0 +1,27 @@
+
+/* ---- T05 AI B: AURORA MAX HISTORY — selectable rows + selected-day detail ---- */
+.max-history-row[role="button"] { cursor: pointer; }
+.max-history-row.is-selected {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+  background: rgba(127, 255, 220, 0.10);
+}
+.max-history-row:focus-visible { outline: 2px dashed currentColor; outline-offset: -2px; }
+
+.max-history-detail .max-detail-hint { margin: 0; opacity: .75; }
+.max-history-detail .max-detail-head {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px;
+  margin-bottom: 8px; letter-spacing: .08em;
+}
+.max-history-detail .max-detail-head span { font-size: 11px; opacity: .7; }
+.max-history-detail .max-detail-head strong { font-size: 16px; }
+.max-history-detail .max-detail-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px; margin: 0;
+}
+.max-history-detail .max-detail-grid > div {
+  border: 1px solid rgba(127, 255, 220, 0.35); padding: 8px 10px; min-width: 0;
+}
+.max-history-detail dt { font-size: 10px; letter-spacing: .08em; opacity: .7; }
+.max-history-detail dd { margin: 4px 0 0; font-size: 15px; font-weight: 700; overflow-wrap: anywhere; }
+.max-history-detail .max-detail-note { margin: 8px 0 0; font-size: 11px; opacity: .75; }

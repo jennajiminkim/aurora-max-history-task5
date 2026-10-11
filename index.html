@@ -56,7 +56,7 @@
       </aside>
 
       <section class="panel chart-panel">
-        <div class="panel-title daily-header"><span>DAILY RECORDS <small>/ ASIA-SEOUL</small></span><span class="daily-tag">ONE ROW PER KST DATE</span></div>
+        <div class="panel-title daily-header"><span>DAILY RECORDS <small>/ ASIA-SEOUL</small></span><span class="daily-history-actions"><span class="daily-tag">ONE ROW PER KST DATE</span><button id="viewMaxHistory" type="button" class="max-history-open">VIEW HISTORY ↗</button></span></div>
         <div class="daily-summary" aria-label="Latest activity and today's observed peak">
           <div class="daily-metric"><span class="daily-metric-label">LATEST</span><strong id="dailyLatest">--</strong><small>Latest successful NOAA fetch</small></div>
           <div class="daily-metric max"><span class="daily-metric-label">MAX (OBSERVED)</span><strong id="dailyMax">--</strong><small>Highest value fetched on this KST date</small></div>
@@ -169,6 +169,21 @@
     </footer>
   </main>
 
+  <!-- T05: read-only MAX history (A) + close / selected-day detail (B). -->
+  <dialog id="maxHistoryDialog" class="max-history-dialog" aria-label="AURORA MAX HISTORY">
+    <div class="max-history-folder">
+      <header class="max-folder-tab"><span>▣ &nbsp; aurora-max-history</span><button type="button" id="maxHistoryClose" aria-label="Close history">×</button></header>
+      <div class="max-folder-body">
+        <div class="max-folder-eyebrow">KILPISJÄRVI 01 / ASIA-SEOUL</div>
+        <h2>AURORA MAX HISTORY</h2>
+        <p class="quiet">The highest activity successfully fetched in this browser for each KST date. Not a complete-day NOAA maximum.</p>
+        <div id="maxHistoryRows" class="max-history-rows" aria-label="Daily maximum history"></div>
+        <div class="max-folder-peak"><span>HIGHEST RECORDED</span><strong id="maxHistoryHighest">--</strong><span>PEAK DATE</span><strong id="maxHistoryPeakDate">--</strong></div>
+        <section id="maxHistoryDetail" class="max-history-detail" aria-label="Selected peak day details" aria-live="polite"><p class="max-detail-hint">Select a day to inspect MAX / LATEST / MAX TIME.</p></section>
+      </div>
+    </div>
+  </dialog>
+
   <dialog id="previewDialog" class="preview-dialog" aria-label="Aurora activity simulation, not real NOAA data">
     <div class="preview-inner">
       <div class="panel-title preview-title">
@@ -193,6 +208,7 @@
     </div>
   </dialog>
 
+  <script src="./max-history-data.js"></script>
   <script src="./app.js"></script>
 </body>
 </html>
