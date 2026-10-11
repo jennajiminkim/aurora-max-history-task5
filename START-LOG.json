@@ -1,6 +1,6 @@
 {
   "project": "T05 / AURORA MAX HISTORY",
-  "stage": "AI_A_FINISHED_AND_HANDED_OFF_WAITING_FOR_B",
+  "stage": "B_DELIVERABLE_INTEGRATED_AWAITING_FINAL_METADATA_AND_PUBLIC_DEPLOY",
   "tests_frozen_at_utc": "2026-10-10T14:17:19Z",
   "tests_frozen_at_kst": "2026-10-10T23:17:19+09:00",
   "frozen_test_ids": [
@@ -73,17 +73,26 @@
     "code_version_note": "Ending source SHA denotes the GitHub commit containing the A code. Handoff/test evidence commits follow without changes to application source."
   },
   "B": {
-    "model_service": "[A와 다른 모델/서비스, 공개 보고서에서는 익명 B]",
+    "model_service": "Claude (regular chat, not Claude Code; public A/B report anonymizes)",
     "actual_started_at_utc": null,
     "actual_ended_at_utc": null,
     "starting_commit_sha": null,
-    "ending_commit_sha": null,
-    "user_messages": null,
+    "ending_commit_sha": "cb5d40cedd11d7767ee9530852262c42ee79e760",
+    "user_messages": 5,
     "tool_calls": null,
     "test_runs": [],
     "passing_tests": null,
     "error_rounds": null,
-    "handoff_sha256_verified": null
+    "handoff_sha256_verified": null,
+    "user_messages_for_access_troubleshooting": 3,
+    "user_messages_for_development": 2,
+    "reported_active_development_minutes_approx": 2,
+    "total_elapsed_minutes_including_setup": null,
+    "time_cap_within_45_minutes_verified": null,
+    "ending_commit_note": "B's edited code was uploaded by user to main after Claude chat; integration and independent revalidation were performed subsequently on t05-ai-b-final. B beginning SHA and exact timestamps have not yet been verified.",
+    "reported_provisional_passes": 10,
+    "independent_revalidation_passes": 10,
+    "official_posted_runner_passes": null
   },
   "sequence": [
     "A_STARTED",
@@ -91,11 +100,12 @@
     "B_STARTED",
     "B_FINISHED"
   ],
-  "sequence_current_status": "A_FINISHED_AND_HANDED_OFF",
+  "sequence_current_status": "B_CODE_DELIVERED_BUT_TIMESTAMP_AND_HANDOFF_VERIFICATION_INCOMPLETE",
   "notes": [
     "A 시작 시각은 구현 요청을 실제 처음 전달하는 순간 채운다. 사전 준비를 A 시작으로 허위 기록하지 않는다.",
     "B는 서로 다른 서비스/모델의 새 대화에서 저장소와 HANDOFF.md만 받는다.",
-    "A/B 측정 수치는 실측값만 입력한다. 오류 회차는 고정 10검사의 FAIL 포함 회차 수다."
+    "A/B 측정 수치는 실측값만 입력한다. 오류 회차는 고정 10검사의 FAIL 포함 회차 수다.",
+    "B user-provided counts: total 5 user messages (3 Github authorization/troubleshooting, 2 development); active implementation time approximately 2 min. Overall elapsed task time from initial request is unverified."
   ],
   "sequence_actual": [
     "A_STARTED",
