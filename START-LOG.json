@@ -82,7 +82,7 @@
     "tool_calls": null,
     "test_runs": [],
     "passing_tests": null,
-    "error_rounds": null,
+    "error_rounds": 0,
     "handoff_sha256_verified": null,
     "user_messages_for_access_troubleshooting": 3,
     "user_messages_for_development": 2,
@@ -115,7 +115,8 @@
     "handoff_uploaded_attachment_lines_shown": 89,
     "handoff_repos_identical_blob_sha": "526e6f00dafaae2e923ba892095bdc4fd5ef2bbb",
     "handoff_repos_identical_blob_verified": true,
-    "handoff_uploaded_attachment_cryptographic_identity_verified": false
+    "handoff_uploaded_attachment_cryptographic_identity_verified": false,
+    "error_rounds_source": "Student-confirmed B fixed-test failure rounds: 0. Separate shell brace expansion error: 1; not counted as a test failure round."
   },
   "sequence": [
     "A_STARTED",
@@ -136,5 +137,11 @@
   "sequence_actual": [
     "A_STARTED",
     "A_FINISHED_AND_HANDED_OFF"
-  ]
+  ],
+  "public_site_check": {
+    "url": "https://aurora-max-history-task5.vercel.app/",
+    "incognito_no_login_success": true,
+    "evidence": "User-provided Chrome incognito screenshot on 2026-10-11 around 13:54 KST; main page loaded. Previous normal-browser screenshot showed VIEW HISTORY modal open."
+  },
+  "student_final_choice": "B for code completion and concise explanations; A for GitHub connectivity and evidence tracking."
 }
