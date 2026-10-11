@@ -74,8 +74,8 @@
   },
   "B": {
     "model_service": "Claude (regular chat, not Claude Code; public A/B report anonymizes)",
-    "actual_started_at_utc": null,
-    "actual_ended_at_utc": null,
+    "actual_started_at_utc": "2026-10-11T03:14:00Z",
+    "actual_ended_at_utc": "2026-10-11T03:37:00Z",
     "starting_commit_sha": null,
     "ending_commit_sha": "cb5d40cedd11d7767ee9530852262c42ee79e760",
     "user_messages": 5,
@@ -87,12 +87,17 @@
     "user_messages_for_access_troubleshooting": 3,
     "user_messages_for_development": 2,
     "reported_active_development_minutes_approx": 2,
-    "total_elapsed_minutes_including_setup": null,
-    "time_cap_within_45_minutes_verified": null,
+    "total_elapsed_minutes_including_setup": 23,
+    "time_cap_within_45_minutes_verified": true,
     "ending_commit_note": "B's edited code was uploaded by user to main after Claude chat; integration and independent revalidation were performed subsequently on t05-ai-b-final. B beginning SHA and exact timestamps have not yet been verified.",
     "reported_provisional_passes": 10,
     "independent_revalidation_passes": 10,
-    "official_posted_runner_passes": null
+    "official_posted_runner_passes": null,
+    "reported_started_at_kst": "2026-10-11T12:14:00+09:00",
+    "reported_ended_at_kst": "2026-10-11T12:37:00+09:00",
+    "time_record_source": "User reported initial and final Claude message times; date inferred from work date 2026-10-11 KST.",
+    "user_message_cap_within_8_verified": true,
+    "elapsed_time_explanation": "Includes GitHub access/authorization troubleshooting; excludes later manual GitHub upload and independent revalidation."
   },
   "sequence": [
     "A_STARTED",
@@ -105,7 +110,8 @@
     "A 시작 시각은 구현 요청을 실제 처음 전달하는 순간 채운다. 사전 준비를 A 시작으로 허위 기록하지 않는다.",
     "B는 서로 다른 서비스/모델의 새 대화에서 저장소와 HANDOFF.md만 받는다.",
     "A/B 측정 수치는 실측값만 입력한다. 오류 회차는 고정 10검사의 FAIL 포함 회차 수다.",
-    "B user-provided counts: total 5 user messages (3 Github authorization/troubleshooting, 2 development); active implementation time approximately 2 min. Overall elapsed task time from initial request is unverified."
+    "B user-provided counts: total 5 user messages (3 Github authorization/troubleshooting, 2 development); active implementation time approximately 2 min. Overall elapsed task time from initial request is unverified.",
+    "B Claude session reported start 12:14 and final completion message 12:37 KST on 2026-10-11; 23 minutes total. GitHub code commit after B conversation is a separate publication step."
   ],
   "sequence_actual": [
     "A_STARTED",
