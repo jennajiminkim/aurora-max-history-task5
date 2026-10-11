@@ -97,7 +97,16 @@
     "reported_ended_at_kst": "2026-10-11T12:37:00+09:00",
     "time_record_source": "User reported initial and final Claude message times; date inferred from work date 2026-10-11 KST.",
     "user_message_cap_within_8_verified": true,
-    "elapsed_time_explanation": "Includes GitHub access/authorization troubleshooting; excludes later manual GitHub upload and independent revalidation."
+    "elapsed_time_explanation": "Includes GitHub access/authorization troubleshooting; excludes later manual GitHub upload and independent revalidation.",
+    "tool_calls_after_file_upload_self_counted": 11,
+    "tool_calls_after_file_upload_breakdown": {
+      "bash_tool": 10,
+      "present_files": 1
+    },
+    "tool_calls_after_file_upload_record_source": "AI B directly counted its own logs and reported counts to user; not automatic system telemetry. Earlier/other calls not verified.",
+    "tool_calls_total_verified": false,
+    "non_test_shell_command_errors": 1,
+    "non_test_shell_command_error_note": "One bash_tool call failed due to shell brace expansion and was retried. Already included within the 11 counted tool calls; not a failing round of T05-H01..H10."
   },
   "sequence": [
     "A_STARTED",
@@ -111,7 +120,8 @@
     "B는 서로 다른 서비스/모델의 새 대화에서 저장소와 HANDOFF.md만 받는다.",
     "A/B 측정 수치는 실측값만 입력한다. 오류 회차는 고정 10검사의 FAIL 포함 회차 수다.",
     "B user-provided counts: total 5 user messages (3 Github authorization/troubleshooting, 2 development); active implementation time approximately 2 min. Overall elapsed task time from initial request is unverified.",
-    "B Claude session reported start 12:14 and final completion message 12:37 KST on 2026-10-11; 23 minutes total. GitHub code commit after B conversation is a separate publication step."
+    "B Claude session reported start 12:14 and final completion message 12:37 KST on 2026-10-11; 23 minutes total. GitHub code commit after B conversation is a separate publication step.",
+    "B added evidence: 11 self-counted tool calls after file upload (bash_tool 10, present_files 1), 1 command error due to shell brace expansion and retry. Partial count, not automatically generated; fixed-test error rounds still unknown."
   ],
   "sequence_actual": [
     "A_STARTED",
