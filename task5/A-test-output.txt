@@ -1,0 +1,1 @@
+AI A final full frozen run: 10 tests, 7 PASS, 3 FAIL. Failed IDs: T05-H02 (Close ×), T05-H05 (UTC detail), T05-H06 (date detail). See A-test-results.json and A-RUNS.md. Four failing full-run rounds recorded.

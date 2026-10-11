@@ -1,0 +1,59 @@
+{
+  "test_contract_revision": "1.0-FROZEN",
+  "tests": [
+    {
+      "id": "T05-H01",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "T05-H02",
+      "status": "FAIL",
+      "detail": "Close × did not close the modal"
+    },
+    {
+      "id": "T05-H03",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "T05-H04",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "T05-H05",
+      "status": "FAIL",
+      "detail": "AssertionError"
+    },
+    {
+      "id": "T05-H06",
+      "status": "FAIL",
+      "detail": "Missing 2026-10-09 in selected day details"
+    },
+    {
+      "id": "T05-H07",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "T05-H08",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "T05-H09",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "T05-H10",
+      "status": "PASS",
+      "detail": ""
+    }
+  ],
+  "total": 10,
+  "passed": 7,
+  "failed": 3,
+  "error_round": true
+}
